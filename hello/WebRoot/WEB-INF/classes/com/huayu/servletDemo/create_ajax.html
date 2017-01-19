@@ -1,0 +1,36 @@
+<html>
+<head><title>mldn</title></head>
+<body>
+<script language="JavaScript">
+ var xmlHttp;
+ function createXMLHttp(){
+  if(window.XMLHttpRequest){
+    xmlHttp=new XMLHttpRequest();
+  }else {
+     xmlHttp=new ActiveObject("Microsoft.XMLHTTP");
+  }
+ 
+ }
+function showMsg(){
+   create XMLHttp();
+   xmlHttp.open("POST","content.html");
+   xmlHttp.onreadystatechange=showMsgCallback;
+   xmlHttp.send(null);
+}
+function showMsgCallback(){
+  if(xmlHttp.readyState==4){
+  
+   if(xmlHttp.status==20){
+     var text=xmlHttp.responseText; //接收返回的内容
+     document.getElementById("msg").innerHTML=text;
+     }
+  }
+
+
+}
+
+</script>
+<input type="button" onclick="showMsg()" value="调用Ajax显示内容">
+<span id="msg"></span>
+</body>
+</html>
