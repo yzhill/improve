@@ -2,8 +2,11 @@ package com.huayu.vo;
 
 import java.util.Date;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,6 +19,17 @@ public class Member {
 	private String name;
 	private String pwd;
 	private Date birthday;
+	private StuIdCard stuIdCard ;
+	
+	@Embedded
+	public StuIdCard getStuIdCard() {
+		return stuIdCard;
+	}
+
+	public void setStuIdCard(StuIdCard stuIdCard) {
+		this.stuIdCard = stuIdCard;
+	}
+
 	@Temporal(TemporalType.DATE)
 	public Date getBirthday() {
 		return birthday;
@@ -26,6 +40,7 @@ public class Member {
 	}
 
 	@Id
+	@GeneratedValue
 	public int getId() {
 		return id;
 	}

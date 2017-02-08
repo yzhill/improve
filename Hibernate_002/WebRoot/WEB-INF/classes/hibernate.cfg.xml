@@ -28,9 +28,10 @@
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
 
-        <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">create</property>
-        <mapping class="com.huayu.vo.Member"/>
+        <!-- Drop and re-create the database schema on startup 
+        <property name="hbm2ddl.auto">create</property>  -->
+        <mapping class="com.huayu.vo.Group"/>
+        <mapping class="com.huayu.vo.User"/>
         
     </session-factory>
 

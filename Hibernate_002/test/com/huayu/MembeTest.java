@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import com.huayu.vo.Member;
 public class MembeTest {
 	private static SessionFactory sf=null;
 	@SuppressWarnings("deprecation")
+	
 	@BeforeClass 
 	public static void beforeClass(){
 	  sf=new AnnotationConfiguration().configure().buildSessionFactory();
@@ -37,6 +39,15 @@ public class MembeTest {
      session.getTransaction().commit();
      session.close();
 	}  
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testSchemaExport(){
+	  
+		new SchemaExport(new AnnotationConfiguration().configure()).create(true, true);
+		
+		
+	}
      
     @AfterClass
    public static void afterClass(){
