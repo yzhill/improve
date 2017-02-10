@@ -7,20 +7,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="t_user")
-public class User {
+
+public class Student {
 	private int id;
 	private String name;
-	private Group group;
+
 	
-	@ManyToOne
-	
-	public Group getGroup() {
-		return group;
-	}
-	public void setGroup(Group group) {
-		this.group = group;
-	}
 	@Id
 	@GeneratedValue
 	public int getId() {

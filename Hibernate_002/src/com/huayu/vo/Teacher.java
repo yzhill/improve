@@ -7,24 +7,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="t_group")
-public class Group {
+
+public class Teacher {
 	
 	private int id;
 	private String name;
-	private Set<User> users=new HashSet<User>();
+	private Set<Student> students=new HashSet<Student>(); 
 	
-	@OneToMany(mappedBy="group")
-	
-	public Set<User> getUsers() {
-		return users;
+	@ManyToMany
+    @JoinTable (name="t_s", //加入中间表
+          joinColumns={@JoinColumn(name="teacher_id")},
+    	  inverseJoinColumns={@JoinColumn(name="student_id")}
+    		)
+	public Set<Student> getstudents() {
+		return students;
 	}
-	public void setUsers(Set<User> users) {
-		this.users = users;
+	public void setstudents(Set<Student> students) {
+		this.students =students;
 	}
 	@Id
 	@GeneratedValue
