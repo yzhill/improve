@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.huayu.vo">
+     <class name="Member">      <!-- 主键 -->
+         <id name="id"></id>
+         <property name="name"></property>
+         <property name="pwd"></property>
+     
+     </class>
+
+</hibernate-mapping>
