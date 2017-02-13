@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+		     <!-- 打开Annotation配置 -->
+		     <context:annotation-config/>
+		   <!-- 定义使用Annotation的操作包（父包） -->
+		
+		<context:component-scan base-package="com.huayu" />
+		
+		<!-- 读取classpath下的资源信息 -->
+		
+		<context:property-placeholder location="classpath:database.properties" />
+		
+		<!-- 配置使用的数据库连接池类型，同时设置卸载方法为close() -->
+		
+		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		
+		destroy-method="close">
+		
+		<!-- 配置数据库连接地址，通过database.properties读取 -->
+		
+		<property name="jdbcUrl" value="${db.url}"/>
+		
+		<!-- 配置数据库驱动程序，通过database.properties读取 -->
+		
+		<property name="driverClass" value="${db.driverClassName}"/>
+		
+		<!-- 配置数据库用户名，通过database.properties读取 -->
+		
+		<property name="user" value="${db.username}"/>
+		
+		<!-- 配置数据库密码，通过database.properties读取 -->
+		
+		<property name="password" value="${db.password}"/>
+		
+		<!-- 最大的数据库连接量 -->
+		
+		<property name="maxPoolSize" value="1"/>
+		
+		<!-- 最小的数据库连接维护数量 -->
+		
+		<property name="minPoolSize" value="1"/>
+		
+		<!-- 初始化数据库连接数量 -->
+		
+		<property name="initialPoolSize" value="1"/>
+		
+		<!-- 等待连接最大时间 -->
+		
+		<property name="maxIdleTime" value="20"/>
+		
+		</bean>
+		
+		<!-- 定义SessionFactory类对象 -->
+		
+		<bean id="sessionFactory"
+		
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		
+		<!-- 配置hibernate.cfg.xml文件 -->
+		
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+		
+		<!-- 配置数据库使用的数据库连接池 -->
+		
+		<property name="dataSource" ref="dataSource"/>
+		
+		</bean>
+		
+		<!-- 声明式事务，将sessionFactory交给事务进行控制 -->
+		
+		<bean id="transactionManager"
+		
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		
+		<property name="sessionFactory" ref="sessionFactory" />
+		
+		</bean>
+		
+		<!-- 配置事务操作 -->
+		
+		<tx:annotation-driven transaction-manager="transactionManager" />
+		
+		<!-- 配置事务通知属性 -->
+		
+		<tx:advice id="txAdvice" transaction-manager="transactionManager">
+
+       <!-- 定义事务传播属性，这些方法都是服务层的方法标准 -->
+           <tx:attributes>
+               <tx:method name="update" propagation="REQUIRED"/>
+               <tx:method name="insert*" propagation="REQUIRED" />
+               <tx:method name="edit*" propagation="REQUIRED" />
+			   <tx:method name="save*" propagation="REQUIRED" />
+			   <tx:method name="add*" propagation="REQUIRED" />
+				
+			   <tx:method name="new*" propagation="REQUIRED" />
+				
+				<tx:method name="set*" propagation="REQUIRED" />
+				
+				<tx:method name="remove*" propagation="REQUIRED" />
+				
+				<tx:method name="delete*" propagation="REQUIRED" />
+				
+				<tx:method name="change*" propagation="REQUIRED" />
+				
+				<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+				
+				<tx:method name="list*" propagation="REQUIRED" read-only="true" />
+				
+				<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+				
+				<tx:method name="load*" propagation="REQUIRED" read-only="true" />
+				
+				<tx:method name="*" propagation="REQUIRED" read-only="true" />
+				
+				</tx:attributes>
+				
+				</tx:advice>
+				
+				<aop:config expose-proxy="true">
+				
+				<!-- 只对业务逻辑层实施事务 -->
+				
+				<aop:pointcut id="txPointcut" expression="execution(* 
+				
+				com.huayu..service..*.*(..))" />
+				
+				<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
+				
+				</aop:config>
+	
+</beans>
